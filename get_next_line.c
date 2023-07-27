@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/07/27 01:48:08 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:58:05 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,43 @@ char	*get_next_line(int fd)
 		return (0);
 	buf = read_next_line(fd, buf);
 	//printf("buf:%s|\n", buf);
-	if (!buf)
+	if (!buf || buf[0] == '\0')
+	{
+		if (buf != NULL)
+		{
+			free(buf);
+			buf = NULL;
+		}
 		return (NULL);
+	}
 	line = get_line_and_clean(buf);
-	//printf("line:%s|\n", line);
+	//printf("lllline:%s|\n", buf);
 	if (!line)
 	{
 		free(buf);
+		buf = NULL;
 		return (NULL);
 	}
-	if (buf[0] != '\0')
+	if (!ft_strchr(buf, '\n') && !ft_strchr(line, '\n'))
+	{
+		free(buf);
+		buf = NULL;
+	} 
+	else if (buf[0] != '\0')
 	{
 		tmp = malloc(ft_strlen(buf) + 1);
 		if (!tmp)
 		{
 			free(buf);
+			free(line);
 			return (NULL);
 		}
 		ft_strcpy(tmp, buf);
+		//printf("tmp:%s|\n", tmp);
 		free(buf);
 		buf = tmp;
 	}
+	//printf("buf:%s|\n", buf);
 	return (line);
 }
 
@@ -52,10 +68,18 @@ char	*get_line_and_clean(char *line)
 	int		j;
 	char	*r;
 
-	//printf("glac|line:%s|%d|%d|\n", line, line[0] == '\n', line[1] == '\0');
-	//printf("g2:%s|%ld|\n", ft_strchr(line, '\n'), ft_strchr(line, '\n') - line);
-	j = (int) (ft_strchr(line, '\n') - line);
-	//printf("allocated:%d|\n", j);
+	if (line == NULL)
+		return NULL;
+	if (line[0] == '\n')
+		j = 0;
+	else if (ft_strchr(line, '\n') == NULL)
+	{
+		r = malloc(ft_strlen(line) + 1);
+		ft_strcpy(r, line);
+		return r;
+	}
+	else
+		j = (int) (ft_strchr(line, '\n') - line);
 	if (j < 0)
 		return (NULL);
 	r = malloc(j + 2);
@@ -69,21 +93,26 @@ char	*get_line_and_clean(char *line)
 	}
 	ft_strcpy(r + i, "\n");
 	ft_strcpy(line, line + i + 1);
-	printf("%s|\n", line);
-	exit(1);
 	return (r);
 }
 
+//#define TEST
+#ifdef TEST
+
 #include <stdio.h>
+#include <string.h>
 int main() {
 
 	int fd = open("in.txt", O_RDONLY);
 	char *r;
 	
 	while ((r = get_next_line(fd))) {
-
-		printf("here%s|\n", r);
-
+		printf("%s|\n", r);
+		free(r);
+		r = NULL;
 	}
-
+	free(r);
+	
 }
+
+#endif
