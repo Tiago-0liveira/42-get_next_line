@@ -92,8 +92,11 @@ char	*read_next_line(int fd, char *line)
 			return (NULL);
 		}
 		buf[rv] = '\0';
+		printf("buf:%s|\n", buf);
 		line = ft_strjoin(line, buf);
+		printf("line:%s|\n", line);
 	}
+	printf("here|%s|\n", line);
 	free(buf);
 	return (line);
 }

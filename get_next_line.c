@@ -21,9 +21,11 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	buf = read_next_line(fd, buf);
+	//printf("buf:%s|\n", buf);
 	if (!buf)
 		return (NULL);
 	line = get_line_and_clean(buf);
+	//printf("line:%s|\n", line);
 	if (!line)
 	{
 		free(buf);
@@ -50,8 +52,11 @@ char	*get_line_and_clean(char *line)
 	int		j;
 	char	*r;
 
-	j = ft_strchr(line, '\n') - line;
-	if (j <= 0)
+	//printf("glac|line:%s|%d|%d|\n", line, line[0] == '\n', line[1] == '\0');
+	//printf("g2:%s|%ld|\n", ft_strchr(line, '\n'), ft_strchr(line, '\n') - line);
+	j = (int) (ft_strchr(line, '\n') - line);
+	//printf("allocated:%d|\n", j);
+	if (j < 0)
 		return (NULL);
 	r = malloc(j + 2);
 	if (!r)
@@ -64,19 +69,21 @@ char	*get_line_and_clean(char *line)
 	}
 	ft_strcpy(r + i, "\n");
 	ft_strcpy(line, line + i + 1);
+	printf("%s|\n", line);
+	exit(1);
 	return (r);
 }
-/* we're using only part of the memory that we allocated to the line variable,
-we must treat that afterwards */
-#include <stdio.h>
 
+#include <stdio.h>
 int main() {
 
 	int fd = open("in.txt", O_RDONLY);
-
 	char *r;
+	
 	while ((r = get_next_line(fd))) {
-		printf("%s|\n", r);
-		free(r);
+
+		printf("here%s|\n", r);
+
 	}
+
 }
