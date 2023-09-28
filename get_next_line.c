@@ -6,83 +6,76 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/07/27 17:58:05 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/09/28 20:20:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+static char	*get_line(char **buf);
+static char	*get_line_and_clean(char *line);
+
 char	*get_next_line(int fd)
 {
 	static char	*buf;
-	char		*line;
-	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	buf = read_next_line(fd, buf);
-	//printf("buf:%s|\n", buf);
 	if (!buf || buf[0] == '\0')
 	{
-		if (buf != NULL)
-		{
-			free(buf);
-			buf = NULL;
-		}
-		return (NULL);
-	}
-	line = get_line_and_clean(buf);
-	//printf("lllline:%s|\n", buf);
-	if (!line)
-	{
 		free(buf);
 		buf = NULL;
 		return (NULL);
 	}
-	if (!ft_strchr(buf, '\n') && !ft_strchr(line, '\n'))
+	return (get_line(&buf));
+}
+
+static char	*get_line(char **buf)
+{
+	char	*line;
+	char	*tmp;
+
+	line = get_line_and_clean(*buf);
+	if (!line || (!ft_strchr(*buf, '\n') && !ft_strchr(line, '\n')))
+	{	
+		free(*buf);
+		*buf = NULL;
+		if (!line)
+			return (NULL);
+	}
+	else if ((*buf)[0] != '\0')
 	{
-		free(buf);
-		buf = NULL;
-	} 
-	else if (buf[0] != '\0')
-	{
-		tmp = malloc(ft_strlen(buf) + 1);
+		tmp = malloc(ft_strlen(*buf) + 1);
 		if (!tmp)
 		{
-			free(buf);
+			free(*buf);
 			free(line);
 			return (NULL);
 		}
-		ft_strcpy(tmp, buf);
-		//printf("tmp:%s|\n", tmp);
-		free(buf);
-		buf = tmp;
+		ft_strcpy(tmp, *buf);
+		free(*buf);
+		*buf = tmp;
 	}
-	//printf("buf:%s|\n", buf);
 	return (line);
 }
 
-char	*get_line_and_clean(char *line)
+static char	*get_line_and_clean(char *line)
 {
 	int		i;
-	int		j;
 	char	*r;
 
-	if (line == NULL)
-		return NULL;
 	if (line[0] == '\n')
-		j = 0;
+		i = 0;
 	else if (ft_strchr(line, '\n') == NULL)
 	{
 		r = malloc(ft_strlen(line) + 1);
 		ft_strcpy(r, line);
-		return r;
+		return (r);
 	}
 	else
-		j = (int) (ft_strchr(line, '\n') - line);
-	if (j < 0)
-		return (NULL);
-	r = malloc(j + 2);
+		i = (int)(ft_strchr(line, '\n') - line);
+	r = malloc(i + 2);
 	if (!r)
 		return (NULL);
 	i = 0;
@@ -95,24 +88,3 @@ char	*get_line_and_clean(char *line)
 	ft_strcpy(line, line + i + 1);
 	return (r);
 }
-
-//#define TEST
-#ifdef TEST
-
-#include <stdio.h>
-#include <string.h>
-int main() {
-
-	int fd = open("in.txt", O_RDONLY);
-	char *r;
-	
-	while ((r = get_next_line(fd))) {
-		printf("%s|\n", r);
-		free(r);
-		r = NULL;
-	}
-	free(r);
-	
-}
-
-#endif

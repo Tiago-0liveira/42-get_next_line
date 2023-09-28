@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:13:46 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/07/27 17:57:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:35:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_strjoin(char *str1, char *str2)
 	if (!r)
 		return (NULL);
 	ft_strcpy(r, str1);
-	ft_strcpy(r + ft_strlen(str1), str2);	
+	ft_strcpy(r + ft_strlen(str1), str2);
 	free(str1);
 	return (r);
 }
@@ -85,20 +85,15 @@ char	*read_next_line(int fd, char *line)
 	rv = 1;
 	while (!ft_strchr(line, '\n') && rv != 0)
 	{
-		//printf("entrou\n");
 		rv = read(fd, buf, BUFFER_SIZE);
-		//printf("here\n");
 		if (rv == -1)
 		{
 			free(buf);
-			//printf("here2\n");
 			return (NULL);
 		}
 		buf[rv] = '\0';
 		line = ft_strjoin(line, buf);
 	}
-
-	//printf("line:%s|\n", line);
 	free(buf);
 	return (line);
 }
