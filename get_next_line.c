@@ -38,7 +38,7 @@ static char	*get_line(char **buf)
 
 	line = get_line_and_clean(*buf);
 	if (!line || (!ft_strchr(*buf, '\n') && !ft_strchr(line, '\n')))
-	{	
+	{
 		free(*buf);
 		*buf = NULL;
 		if (!line)
