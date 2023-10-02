@@ -6,13 +6,17 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/09/28 20:17:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:21:37 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 
 # define GET_NEXT_LINE_H
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+# endif
 
 # include <unistd.h>
 # include <stdlib.h>

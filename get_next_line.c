@@ -6,18 +6,18 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/09/28 20:20:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:44:51 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*get_line(char **buf);
 static char	*get_line_and_clean(char *line);
 
 char	*get_next_line(int fd)
 {
 	static char	*buf;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
@@ -28,34 +28,13 @@ char	*get_next_line(int fd)
 		buf = NULL;
 		return (NULL);
 	}
-	return (get_line(&buf));
-}
-
-static char	*get_line(char **buf)
-{
-	char	*line;
-	char	*tmp;
-
-	line = get_line_and_clean(*buf);
-	if (!line || (!ft_strchr(*buf, '\n') && !ft_strchr(line, '\n')))
+	line = get_line_and_clean(buf);
+	if (!line || (!ft_strchr(buf, '\n') && !ft_strchr(line, '\n')))
 	{
-		free(*buf);
-		*buf = NULL;
+		free(buf);
+		buf = NULL;
 		if (!line)
 			return (NULL);
-	}
-	else if ((*buf)[0] != '\0')
-	{
-		tmp = malloc(ft_strlen(*buf) + 1);
-		if (!tmp)
-		{
-			free(*buf);
-			free(line);
-			return (NULL);
-		}
-		ft_strcpy(tmp, *buf);
-		free(*buf);
-		*buf = tmp;
 	}
 	return (line);
 }
@@ -88,3 +67,14 @@ static char	*get_line_and_clean(char *line)
 	ft_strcpy(line, line + i + 1);
 	return (r);
 }
+
+/* int main()
+{
+	int fd = open("test.txt", O_RDONLY);
+
+	
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+} */
