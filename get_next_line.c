@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/10/02 15:44:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:59:54 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line_and_clean(buf);
-	if (!line || (!ft_strchr(buf, '\n') && !ft_strchr(line, '\n')))
+	if (!line || (!gnl_ft_strchr(buf, '\n') && !gnl_ft_strchr(line, '\n')))
 	{
 		free(buf);
 		buf = NULL;
@@ -46,14 +46,14 @@ static char	*get_line_and_clean(char *line)
 
 	if (line[0] == '\n')
 		i = 0;
-	else if (ft_strchr(line, '\n') == NULL)
+	else if (gnl_ft_strchr(line, '\n') == NULL)
 	{
-		r = malloc(ft_strlen(line) + 1);
-		ft_strcpy(r, line);
+		r = malloc(gnl_ft_strlen(line) + 1);
+		gnl_ft_strcpy(r, line);
 		return (r);
 	}
 	else
-		i = (int)(ft_strchr(line, '\n') - line);
+		i = (int)(gnl_ft_strchr(line, '\n') - line);
 	r = malloc(i + 2);
 	if (!r)
 		return (NULL);
@@ -63,18 +63,31 @@ static char	*get_line_and_clean(char *line)
 		r[i] = line[i];
 		i++;
 	}
-	ft_strcpy(r + i, "\n");
-	ft_strcpy(line, line + i + 1);
+	gnl_ft_strcpy(r + i, "\n");
+	gnl_ft_strcpy(line, line + i + 1);
 	return (r);
 }
 
-/* int main()
+char	*read_next_line(int fd, char *line)
 {
-	int fd = open("test.txt", O_RDONLY);
+	int		rv;
+	char	*buf;
 
-	
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-} */
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
+	rv = 1;
+	while (!gnl_ft_strchr(line, '\n') && rv != 0)
+	{
+		rv = read(fd, buf, BUFFER_SIZE);
+		if (rv == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[rv] = '\0';
+		line = gnl_ft_strjoin(line, buf);
+	}
+	free(buf);
+	return (line);
+}
