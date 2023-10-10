@@ -49,6 +49,8 @@ static char	*get_line_and_clean(char *line)
 	else if (gnl_ft_strchr(line, '\n') == NULL)
 	{
 		r = malloc(gnl_ft_strlen(line) + 1);
+		if (!r)
+			return (NULL);
 		gnl_ft_strcpy(r, line);
 		return (r);
 	}
@@ -57,12 +59,7 @@ static char	*get_line_and_clean(char *line)
 	r = malloc(i + 2);
 	if (!r)
 		return (NULL);
-	i = 0;
-	while (line[i] != '\n' && line[i])
-	{
-		r[i] = line[i];
-		i++;
-	}
+	gnl_ft_strcpy_unl(r, line);
 	gnl_ft_strcpy(r + i, "\n");
 	gnl_ft_strcpy(line, line + i + 1);
 	return (r);

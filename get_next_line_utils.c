@@ -45,6 +45,8 @@ char	*gnl_ft_strjoin(char *str1, char *str2)
 	if (!str1)
 	{
 		str1 = malloc(sizeof(char) * 1);
+		if (!str1)
+			return (NULL);
 		str1[0] = '\0';
 	}
 	r = malloc(gnl_ft_strlen(str1) + gnl_ft_strlen(str2) + 1);
@@ -72,4 +74,21 @@ char	*gnl_ft_strchr(char *s, int c)
 		i++;
 	}
 	return (0);
+}
+
+char	*gnl_ft_strcpy_unl(char *dest, char *src)
+{
+	int	i;
+
+	if (!dest || !src)
+		return (NULL);
+	i = 0;
+	while (src[i] && src[i] != '\n')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i++] = '\n';
+	dest[i] = '\0';
+	return (dest);
 }

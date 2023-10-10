@@ -23,11 +23,12 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-char		*get_next_line(int fd);
-char		*read_next_line(int fd, char *line);
-int			gnl_ft_strlen(char *str);
-char		*gnl_ft_strcpy(char *dst, char *src);
-char		*gnl_ft_strjoin(char *str1, char *str2);
-char		*gnl_ft_strchr(char *s, int c);
+char	*get_next_line(int fd);
+char	*read_next_line(int fd, char *line);
+int		gnl_ft_strlen(char *str);
+char	*gnl_ft_strcpy(char *dst, char *src);
+char	*gnl_ft_strjoin(char *str1, char *str2);
+char	*gnl_ft_strchr(char *s, int c);
+char	*gnl_ft_strcpy_unl(char *dest, char *src);
 
 #endif
