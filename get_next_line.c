@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/10/02 16:59:54 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:46:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ char	*get_next_line(int fd)
 		if (!line)
 			return (NULL);
 	}
+	if (gnl_ft_strlen(buf) == 0)
+		free(buf);
+	if (gnl_ft_strlen(buf) == 0)
+		buf = NULL;
 	return (line);
 }
 
@@ -60,7 +64,6 @@ static char	*get_line_and_clean(char *line)
 	if (!r)
 		return (NULL);
 	gnl_ft_strcpy_unl(r, line);
-	gnl_ft_strcpy(r + i, "\n");
 	gnl_ft_strcpy(line, line + i + 1);
 	return (r);
 }
