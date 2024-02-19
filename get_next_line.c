@@ -6,13 +6,14 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:12:08 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 15:46:35 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:23:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 static char	*get_line_and_clean(char *line);
+static void	check_buf(char **buf);
 
 char	*get_next_line(int fd)
 {
@@ -36,10 +37,7 @@ char	*get_next_line(int fd)
 		if (!line)
 			return (NULL);
 	}
-	if (gnl_ft_strlen(buf) == 0)
-		free(buf);
-	if (gnl_ft_strlen(buf) == 0)
-		buf = NULL;
+	check_buf(&buf);
 	return (line);
 }
 
@@ -90,4 +88,15 @@ char	*read_next_line(int fd, char *line)
 	}
 	free(buf);
 	return (line);
+}
+
+static void	check_buf(char **buf)
+{
+	if (!*buf)
+		return ;
+	if ((*buf)[0] == '\0')
+	{
+		free(*buf);
+		*buf = NULL;
+	}
 }

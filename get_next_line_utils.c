@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:13:46 by tiagoliv          #+#    #+#             */
-/*   Updated: 2023/10/03 15:09:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:10:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	gnl_ft_strlen(char *str)
 {
 	int	i;
 
-	if (str == NULL)
+	if (str == NULL || *str == '\0')
 		return (0);
 	i = 0;
 	while (str[i])
